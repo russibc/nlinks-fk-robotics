@@ -3,12 +3,6 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider
 import math
 
-l1 = 0.5
-l2 = 0.5
-
-L = [l1, l2]
-th = [0.0*math.pi, 0.5*math.pi]
-
 
 def FK(th, L):
     L1, L2 = L
@@ -59,34 +53,42 @@ def update_th2(slider_val):
     fig.canvas.draw_idle()
 
 
-p = FK(th, L)
-fig, ax = plt.subplots()
-plt.title('Forward Kinematics 2 Links')
-plt.axis('equal')
-plt.subplots_adjust(left=.1, bottom=0.15)
-plt.xlim([-1.3, 1.3])
-plt.ylim([-1.3, 1.3])
+def main():
+    L1 = 0.5
+    L2 = 0.5
 
-plt.grid()
-#graph = plt.plot(p.T[0], p,T[1])
-graph, = plt.plot(p.T[0], p.T[1])
+    L = [L1, L2]
+    th = [0.0*math.pi, 0.5*math.pi]
 
-slider1_pos = plt.axes([0.1, 0.05, 0.8, 0.03])
-slider2_pos = plt.axes([0.1, 0.01, 0.8, 0.03])
+    p = FK(th, L)
+    fig, ax = plt.subplots()
+    plt.title('Forward Kinematics 2 Links')
+    plt.axis('equal')
+    plt.subplots_adjust(left=.1, bottom=0.15)
+    plt.xlim([-1.3, 1.3])
+    plt.ylim([-1.3, 1.3])
+    plt.grid()
+    graph, = plt.plot(p.T[0], p.T[1])
 
-threshold_slider1 = Slider(
-    slider1_pos, 'th1', -1.0*math.pi, 1.0*math.pi, 0.0*math.pi)
-threshold_slider2 = Slider(
-    slider2_pos, 'th2', -1.0*math.pi, 1.0*math.pi, 0.0*math.pi)
+    slider1_pos = plt.axes([0.1, 0.05, 0.8, 0.03])
+    slider2_pos = plt.axes([0.1, 0.01, 0.8, 0.03])
 
-threshold_slider1.on_changed(update_th1)
-threshold_slider2.on_changed(update_th2)
+    threshold_slider1 = Slider(
+        slider1_pos, 'th1', -1.0*math.pi, 1.0*math.pi, 0.0*math.pi)
+    threshold_slider2 = Slider(
+        slider2_pos, 'th2', -1.0*math.pi, 1.0*math.pi, 0.0*math.pi)
 
-# graph.set_linestyle('-')
-# graph.set_linewidth(5)
-# graph.set_marker('o')
-# graph.set_markerfacecolor('g')
-# graph.set_markeredgecolor('g')
-# graph.set_markersize(15)
-plt.grid()
-plt.show()
+    threshold_slider1.on_changed(update_th1)
+    threshold_slider2.on_changed(update_th2)
+
+    graph.set_linestyle('-')
+    graph.set_linewidth(5)
+    graph.set_marker('o')
+    graph.set_markerfacecolor('g')
+    graph.set_markeredgecolor('g')
+    graph.set_markersize(15)
+    plt.grid()
+    plt.show()
+
+
+main()
