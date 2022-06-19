@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider
 import math
 
-
 def FK(th, L):
     L1, L2 = L
     Th1, Th2 = th
@@ -16,42 +15,7 @@ def FK(th, L):
     x2 = x1 + L2*math.cos(Th1 + Th2)
     y2 = y1 + L2*math.sin(Th1 + Th2)
 
-    X = np.array([[x0, y0], [x1, y1], [x2, y2]])
-
-    return X
-
-
-def update_th1(slider_val):
-    th[0] = slider_val
-
-    p = FK(th, L)
-
-    graph.set_data(p.T[0], p.T[1])
-    graph.set_linestyle('-')
-    graph.set_linewidth(5)
-    graph.set_marker('o')
-    graph.set_markerfacecolor('g')
-    graph.set_markeredgecolor('g')
-    graph.set_markersize(15)
-
-    fig.canvas.draw_idle()
-
-
-def update_th2(slider_val):
-    th[1] = slider_val
-
-    p = FK(th, L)
-
-    graph.set_data(p.T[0], p.T[1])
-    graph.set_linestyle('-')
-    graph.set_linewidth(5)
-    graph.set_marker('o')
-    graph.set_markerfacecolor('g')
-    graph.set_markeredgecolor('g')
-    graph.set_markersize(15)
-
-    fig.canvas.draw_idle()
-
+    return np.array([[x0, y0], [x1, y1], [x2, y2]])
 
 def main():
     L1 = 0.5
@@ -73,6 +37,36 @@ def main():
     slider1_pos = plt.axes([0.1, 0.05, 0.8, 0.03])
     slider2_pos = plt.axes([0.1, 0.01, 0.8, 0.03])
 
+    def update_th1(slider_val):
+        th[0] = slider_val
+
+        p = FK(th, L)
+
+        graph.set_data(p.T[0], p.T[1])
+        graph.set_linestyle('-')
+        graph.set_linewidth(5)
+        graph.set_marker('o')
+        graph.set_markerfacecolor('g')
+        graph.set_markeredgecolor('g')
+        graph.set_markersize(15)
+
+        fig.canvas.draw_idle()
+
+    def update_th2(slider_val):
+        th[1] = slider_val
+
+        p = FK(th, L)
+
+        graph.set_data(p.T[0], p.T[1])
+        graph.set_linestyle('-')
+        graph.set_linewidth(5)
+        graph.set_marker('o')
+        graph.set_markerfacecolor('g')
+        graph.set_markeredgecolor('g')
+        graph.set_markersize(15)
+
+        fig.canvas.draw_idle()
+
     threshold_slider1 = Slider(
         slider1_pos, 'th1', -1.0*math.pi, 1.0*math.pi, 0.0*math.pi)
     threshold_slider2 = Slider(
@@ -89,6 +83,5 @@ def main():
     graph.set_markersize(15)
     plt.grid()
     plt.show()
-
 
 main()
