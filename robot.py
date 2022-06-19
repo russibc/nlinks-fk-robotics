@@ -7,8 +7,11 @@ import math
 class Robot:
 
     def __init__(self, links):
-        self.links = links
-        self.execute(links)
+        if(links <= 0 or links > 3):
+            print('Invalid number of links')
+        else:
+            self.links = links
+            self.execute()
 
     def FK(self, th, L):
         L1, L2, L3 = L
@@ -19,26 +22,40 @@ class Robot:
         x1 = L1*math.cos(Th1)
         y1 = L1*math.sin(Th1)
 
-        x2 = x1 + L2*math.cos(Th1 + Th2)
-        y2 = y1 + L2*math.sin(Th1 + Th2)
+        if(self.links == 2):
+            x2 = x1 + L2*math.cos(Th1 + Th2)
+            y2 = y1 + L2*math.sin(Th1 + Th2)
+        elif(self.links == 3):
+            x2 = x1 + L2*math.cos(Th1 + Th2)
+            y2 = y1 + L2*math.sin(Th1 + Th2)
 
-        x3 = x2 + L3*math.cos(Th1+Th2+Th3)
-        y3 = y2 + L3*math.sin(Th1+Th2+Th3)
+            x3 = x2 + L3*math.cos(Th1+Th2+Th3)
+            y3 = y2 + L3*math.sin(Th1+Th2+Th3)
 
-        return np.array([[x0, y0], [x1, y1], [x2, y2], [x3, y3]])
+        X = []
+        if(self.links == 1):
+            X = np.array([[x0, y0], [x1, y1]])
+        elif(self.links == 2):
+            X = np.array([[x0, y0], [x1, y1], [x2, y2]])
+        elif(self.links == 3):
+            X = np.array([[x0, y0], [x1, y1], [x2, y2], [x3, y3]])
 
-    def execute(self, links):
+        return X
+
+    def execute(self):
+        slider1_pos = 0
+        slider2_pos = 0
+        slider3_pos = 0
         L1 = 0.5
         L2 = 0.5
         L3 = 0.5
-
         L = [L1, L2, L3]
         th = [0.0*math.pi, 0.0*math.pi, 0.0*math.pi]
 
         p = self.FK(th, L)
 
         fig, ax = plt.subplots()
-        plt.title('Forward Kinematics '+str(self.links)+' Links')
+        plt.title('Forward Kinematics '+str(self.links)+' Link'+('s' if self.links > 1 else ''))
         plt.axis('equal')
         plt.subplots_adjust(left=0.1, bottom=0.25)
         plt.xlim([-2.5, 2.5])
@@ -46,10 +63,6 @@ class Robot:
 
         plt.grid()
         graph, = plt.plot(p.T[0], p.T[1])
-
-        slider1_pos = plt.axes([0.1, 0.13, 0.8, 0.03])
-        slider2_pos = plt.axes([0.1, 0.09, 0.8, 0.03])
-        slider3_pos = plt.axes([0.1, 0.05, 0.8, 0.03])
 
         def update_th1(slider_val):
             th[0] = slider_val
@@ -96,16 +109,23 @@ class Robot:
 
             fig.canvas.draw_idle()
 
-        threshold_slider1 = Slider(
-            slider1_pos, 'th1', -1.0*math.pi, 1.0*math.pi, 0.0*math.pi)
-        threshold_slider2 = Slider(
-            slider2_pos, 'th2', -1.0*math.pi, 1.0*math.pi, 0.0*math.pi)
-        threshold_slider3 = Slider(
-            slider3_pos, 'th3', -1.0*math.pi, 1.0*math.pi, 0.0*math.pi)
-
+        slider1_pos = plt.axes([0.1, 0.13, 0.8, 0.03])      
+        threshold_slider1 = Slider(slider1_pos, 'th1', -1.0*math.pi, 1.0*math.pi, 0.0*math.pi)
         threshold_slider1.on_changed(update_th1)
-        threshold_slider2.on_changed(update_th2)
-        threshold_slider3.on_changed(update_th3)
+
+        if(self.links == 2):
+            slider2_pos = plt.axes([0.1, 0.09, 0.8, 0.03])
+            threshold_slider2 = Slider(slider2_pos, 'th2', -1.0*math.pi, 1.0*math.pi, 0.0*math.pi)
+            threshold_slider2.on_changed(update_th2)
+        elif(self.links == 3):
+
+            slider2_pos = plt.axes([0.1, 0.09, 0.8, 0.03])
+            threshold_slider2 = Slider(slider2_pos, 'th2', -1.0*math.pi, 1.0*math.pi, 0.0*math.pi)
+            threshold_slider2.on_changed(update_th2)
+
+            slider3_pos = plt.axes([0.1, 0.05, 0.8, 0.03])
+            threshold_slider3 = Slider(slider3_pos, 'th3', -1.0*math.pi, 1.0*math.pi, 0.0*math.pi)
+            threshold_slider3.on_changed(update_th3)
 
         graph.set_linestyle('-')
         graph.set_linewidth(5)
