@@ -14,22 +14,21 @@ class Robot:
             self.execute()
 
     def FK(self, th, L):
-        Th1, Th2, Th3 = th
         x0 = 0.0
         y0 = 0.0
 
-        x1 = L[0]*math.cos(Th1)
-        y1 = L[0]*math.sin(Th1)
+        x1 = L[0]*math.cos(th[0])
+        y1 = L[0]*math.sin(th[0])
 
         if(self.links == 2):
-            x2 = x1 + L[1]*math.cos(Th1 + Th2)
-            y2 = y1 + L[1]*math.sin(Th1 + Th2)
+            x2 = x1 + L[1]*math.cos(th[0] + th[1])
+            y2 = y1 + L[1]*math.sin(th[0] + th[1])
         elif(self.links == 3):
-            x2 = x1 + L[1]*math.cos(Th1 + Th2)
-            y2 = y1 + L[1]*math.sin(Th1 + Th2)
+            x2 = x1 + L[1]*math.cos(th[0] + th[1])
+            y2 = y1 + L[1]*math.sin(th[0] + th[1])
 
-            x3 = x2 + L[2]*math.cos(Th1+Th2+Th3)
-            y3 = y2 + L[2]*math.sin(Th1+Th2+Th3)
+            x3 = x2 + L[2]*math.cos(th[0]+th[1]+th[2])
+            y3 = y2 + L[2]*math.sin(th[0]+th[1]+th[2])
 
         X = []
         if(self.links == 1):
