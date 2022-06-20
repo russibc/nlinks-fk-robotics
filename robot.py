@@ -64,10 +64,14 @@ class Robot:
         plt.grid()
         graph, = plt.plot(p.T[0], p.T[1])
 
+        text = ax.text(.8, .8, 'x = '+str(p.T[0][self.links])+', y ='+ str(p.T[1][self.links]))
+
         def update_th1(slider_val):
             th[0] = slider_val
 
             p = self.FK(th, L)
+
+            text.set_text('x = '+str(round(p.T[0][self.links],2))+', y ='+ str(round(p.T[1][self.links],2)))
 
             graph.set_data(p.T[0], p.T[1])
             graph.set_linestyle('-')
@@ -84,6 +88,8 @@ class Robot:
 
             p = self.FK(th, L)
 
+            text.set_text('x = '+str(round(p.T[0][self.links],2))+', y ='+ str(round(p.T[1][self.links],2)))
+
             graph.set_data(p.T[0], p.T[1])
             graph.set_linestyle('-')
             graph.set_linewidth(5)
@@ -98,6 +104,8 @@ class Robot:
             th[2] = slider_val
 
             p = self.FK(th, L)
+
+            text.set_text('x = '+str(round(p.T[0][self.links],2))+', y ='+ str(round(p.T[1][self.links],2)))
 
             graph.set_data(p.T[0], p.T[1])
             graph.set_linestyle('-')
