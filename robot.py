@@ -78,6 +78,7 @@ class Robot:
         plt.ylim([-2.5, 2.5])
         plt.grid()
         graph, = plt.plot(p.T[0], p.T[1])
+        ax.text(.97,.97, 'Coordinates:')
         text = ax.text(.8, .8, 'x = '+str(
             round(p.T[0][self.links], 2))+', y =' + str(round(p.T[1][self.links], 2)))
 
